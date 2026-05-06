@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load avatar_tags %}
+{% block title %}Profile của tôi - A3 Chuyên Tin{% endblock %}
+
+{% block content %}
+<div>
+    <h1 class="text-2xl font-bold text-surface-900 mb-6 flex items-center gap-2">
+        <i class="fas fa-id-card" style="color: #3b82f6;"></i> Hồ sơ của tôi
+    </h1>
+    <div class="grid-2">
+        <div class="card space-y-6">
+            <!-- Avatar section -->
+            <div class="text-center pb-6 border-b border-surface-200">
+                <img src="{{ user.profile.get_avatar_url }}" alt="Avatar" class="avatar-large mx-auto mb-3">
+                <p class="text-sm text-surface-500 mt-2"><i class="fas fa-info-circle mr-1"></i> Ảnh từ Gravatar (dựa trên email)</p>
+            </div>
+            
+            <form method="post" class="space-y-5">
+                {% csrf_token %}
+                
+                <!-- Username (read-only text) -->
+                <div>
+                    <label class="block text-sm font-semibold text-surface-700 mb-1.5">Tên đăng nhập</label>
+                    <div class="flex items-center gap-2 px-4 py-2.5 bg-surface-50 border-2 border-surface-100 rounded-xl">
+                        <i class="fas fa-user text-surface-400"></i>
+                        <span class="font-medium text-surface-700">{{ user.username }}</span>
+                    </div>
+                    <p class="text-xs text-surface-400 mt-1">Tên đăng nhập không thể thay đổi.</p>
+                </div>
+                
+                <!-- Email (read-only text) -->
+                <div>
+                    <label class="block text-sm font-semibold text-surface-700 mb-1.5">Email</label>
+                    <div class="flex items-center gap-2 px-4 py-2.5 bg-surface-50 border-2 border-surface-100 rounded-xl">
+                        <i class="fas fa-envelope text-surface-400"></i>
+                        <span class="font-medium text-surface-700">{{ user.email }}</span>
+                    </div>
+                    <p class="text-xs text-surface-400 mt-1">Liên hệ admin để đổi email.</p>
+                </div>
+                
+                <!-- Full name (wide input) -->
+                <div>
+                    <label class="block text-sm font-semibold text-surface-700 mb-1.5">Họ tên thật</label>
+                    <input type="text" 
+                           name="full_name" 
+                           value="{{ p_form.full_name.value|default:'' }}" 
+                           class="w-full px-4 py-2.5 bg-white border-2 border-surface-200 rounded-xl focus:border-brand-500 focus:outline-none font-medium text-surface-700 transition-colors"
+                           placeholder="Nhập họ tên thật của bạn...">
+                </div>
+                
+                <!-- Bio (Markdown editor) -->
+                <div>
+                    <label class="block text-sm font-semibold text-surface-700 mb-1.5">Giới thiệu</label>
+                    <textarea name="bio" 
+                              class="w-full px-4 py-2.5 bg-white border-2 border-surface-200 rounded-xl focus:border-brand-500 focus:outline-none font-medium text-surface-700 transition-colors resize-y" 
+                              rows="4" 
+                              data-editor="true"
+                              placeholder="Viết giới thiệu về bản thân...">{{ p_form.bio.value|default:'' }}</textarea>
+                    <p class="text-xs text-surface-400 mt-1">Hỗ trợ Markdown.</p>
+                </div>
+                
+                <!-- Quote (Markdown editor) -->
+                <div>
+                    <label class="block text-sm font-semibold text-surface-700 mb-1.5">Quote cá nhân</label>
+                    <input type="text" 
+                           name="quote" 
+                           value="{{ p_form.quote.value|default:'' }}" 
+                           class="w-full px-4 py-2.5 bg-white border-2 border-surface-200 rounded-xl focus:border-brand-500 focus:outline-none font-medium text-surface-700 transition-colors"
+                           placeholder="Một câu nói yêu thích...">
+                    <p class="text-xs text-surface-400 mt-1">Hiển thị trên profile của bạn.</p>
+                </div>
+                
+                <button type="submit" class="btn">Cập nhật</button>
+            </form>
+        </div>
+        
+        <!-- Recent posts sidebar -->
+        <div>
+            <div class="card">
+                <h3 class="text-lg font-bold text-surface-900 mb-4 flex items-center gap-2">
+                    <i class="fas fa-pen" style="color: #3b82f6;"></i> Bài viết gần đây
+                </h3>
+                {% for post in user_posts %}
+                    <div class="py-3 border-b border-surface-100 last:border-0">
+                        <div class="flex items-center gap-2 text-sm text-surface-400 mb-1">
+                            <img src="{{ post.author.profile.get_avatar_url }}" alt="{{ post.author.username }}" class="avatar-inline">
+                            <span>{{ post.author.username }}</span>
+                            <span>•</span>
+                            <span>{{ post.created_at|date:"d/m/Y" }}</span>
+                        </div>
+                        <h4 class="font-semibold">
+                            <a href="{% url 'post_detail' post.pk %}" class="text-surface-800 hover:text-blue-600 transition-colors no-underline">{{ post.title }}</a>
+                        </h4>
+                    </div>
+                {% empty %}
+                    <div class="text-center py-6">
+                        <i class="far fa-file-alt text-3xl text-surface-300 block mb-2"></i>
+                        <p class="text-surface-400 text-sm">Bạn chưa có bài viết nào.</p>
+                    </div>
+                {% endfor %}
+                <a href="{% url 'post_create' %}" class="btn mt-4 w-full justify-center">
+                    <i class="fas fa-plus mr-1"></i> Viết bài mới
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

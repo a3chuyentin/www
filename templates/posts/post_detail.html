@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load markdown_tags %}
+{% load avatar_tags %}
+{% block seo %}{% load seo_tags %}{% seo_meta %}{% endblock %}
+{% block title %}{{ post.title }} - A3 Chuyên Tin{% endblock %}
+
+{% block content %}
+<article class="max-w-4xl mx-auto">
+    {% csrf_token %}
+    
+    <!-- Header -->
+    <div class="card mb-5">
+        <span class="{% if post.post_type == 'ACADEMIC' %}badge-academic{% else %}badge-casual{% endif %} mb-3">
+            {{ post.get_post_type_display }}
+        </span>
+        <h1 class="text-3xl font-extrabold text-surface-900 mb-3">{{ post.title }}</h1>
+        <div class="flex items-center gap-4 text-sm text-surface-400 flex-wrap">
+            <span class="flex items-center gap-1.5">
+                <img src="{{ post.author.profile.get_avatar_url }}" alt="{{ post.author.username }}" class="avatar-inline">
+                <a href="{% url 'profile_detail' post.author.username %}" class="font-semibold text-surface-700 hover:text-brand-600">{{ post.author.username }}</a>
+            </span>
+            <span class="flex items-center gap-1"><i class="fas fa-calendar"></i> {{ post.created_at|date:"d/m/Y H:i" }}</span>
+            <span class="flex items-center gap-1"><i class="fas fa-eye"></i> {{ post.views }} lượt xem</span>
+        </div>
+    </div>
+    
+    <!-- Vote -->
+    <div class="flex items-center gap-3 mb-5 bg-white rounded-xl px-4 py-2 shadow-sm border border-surface-200">
+        <button class="vote-btn-up {% if user_vote == 1 %}active{% endif %}" data-value="1" data-url="{% url 'post_vote' post.pk %}">
+            <i class="fas fa-thumbs-up"></i>
+        </button>
+        <span class="font-bold text-surface-700 min-w-[30px] text-center" id="vote-count">{{ post.total_votes }}</span>
+        <button class="vote-btn-down {% if user_vote == -1 %}active{% endif %}" data-value="-1" data-url="{% url 'post_vote' post.pk %}">
+            <i class="fas fa-thumbs-down"></i>
+        </button>
+    </div>
+    
+    <!-- Content -->
+    <div class="card mb-5">
+        <div class="markdown-content">
+            {{ post.content|render_markdown }}
+        </div>
+        
+        <!-- Hashtags -->
+        <div class="flex flex-wrap gap-1.5 mt-6 pt-4 border-t border-surface-100">
+            <i class="fas fa-tags text-surface-400 mt-1 mr-1"></i>
+            {% for tag in post.hashtags.all %}
+                <a href="{% url 'hashtag_view' tag.slug %}" class="hashtag">#{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Author actions -->
+    {% if user == post.author %}
+        <div class="flex gap-2 mb-5">
+            <a href="{% url 'post_update' post.pk %}" class="btn"><i class="fas fa-edit"></i> Sửa</a>
+            <a href="{% url 'post_delete' post.pk %}" class="btn-danger"><i class="fas fa-trash"></i> Xóa</a>
+        </div>
+    {% endif %}
+    
+    <!-- Comments -->
+    <div class="card">
+        <h3 class="text-xl font-bold text-surface-900 mb-4 flex items-center gap-2">
+            <i class="far fa-comments text-brand-500"></i> Bình luận ({{ post.comments.count }})
+        </h3>
+        
+        {% if user.is_authenticated %}
+            <div class="bg-surface-50 rounded-xl p-4 mb-6">
+                <form method="post" action="{% url 'post_comment' post.pk %}" class="space-y-3">
+                    {% csrf_token %}
+                    {{ comment_form.content }}
+                    <button type="submit" class="btn text-sm">Gửi bình luận</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="bg-surface-50 rounded-xl p-4 mb-6 text-center">
+                <p class="text-surface-500"><a href="{% url 'login' %}" class="text-brand-600 font-semibold">Đăng nhập</a> để bình luận.</p>
+            </div>
+        {% endif %}
+        
+        {% include 'posts/comment_tree.html' with comments=comment_tree %}
+    </div>
+</article>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% load seo_tags %}
+{% if post %}
+    <meta name="description" content="{{ post.content|striptags|truncatewords:30 }}">
+    <meta name="keywords" content="{% for tag in post.hashtags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+    <meta name="author" content="{{ post.author.username }}">
+    <meta property="og:title" content="{{ post.title }} | A3 Chuyên Tin">
+    <meta property="og:description" content="{{ post.content|striptags|truncatewords:30 }}">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="{{ post.created_at|date:'c' }}">
+    <meta property="article:author" content="{{ post.author.username }}">
+{% elif title %}
+    <meta name="description" content="A3 Chuyên Tin - Blog của lớp chuyên Tin">
+    <meta name="keywords" content="blog, tin học, lập trình, học tập, việt nam">
+    <meta property="og:title" content="{{ title }} | A3 Chuyên Tin">
+    <meta property="og:description" content="A3 Chuyên Tin - Blog của lớp chuyên Tin">
+    <meta property="og:type" content="website">
+{% else %}
+    <meta name="description" content="A3 Chuyên Tin - Blog của lớp chuyên Tin, nơi chia sẻ kiến thức và niềm đam mê lập trình">
+    <meta name="keywords" content="blog, tin học, lập trình, học tập, việt nam, python, django">
+    <meta property="og:title" content="A3 Chuyên Tin">
+    <meta property="og:description" content="Blog của lớp chuyên Tin - Chia sẻ kiến thức và đam mê">
+    <meta property="og:type" content="website">
+{% endif %}

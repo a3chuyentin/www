@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} - A3 Chuyên Tin{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="card">
+        <h1 class="text-2xl font-bold text-surface-900 mb-6">{{ title }}</h1>
+        <form method="post" class="space-y-5">
+            {% csrf_token %}
+            <div>
+                <label class="block text-sm font-semibold text-surface-700 mb-1.5">Tiêu đề</label>
+                {{ form.title }}
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-surface-700 mb-1.5">Nội dung (Markdown)</label>
+                {{ form.content }}
+                <p class="text-surface-400 text-xs mt-1">Hỗ trợ Markdown, code highlighting, và MathJax</p>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-surface-700 mb-1.5">Loại bài viết</label>
+                {{ form.post_type }}
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-surface-700 mb-1.5">Hashtag</label>
+                {{ form.hashtag_names }}
+                <p class="text-surface-400 text-xs mt-1">{{ form.hashtag_names.help_text }}</p>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit" class="btn">Lưu bài viết</button>
+                <a href="{% url 'home' %}" class="btn-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

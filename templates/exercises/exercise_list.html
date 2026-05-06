@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load avatar_tags %}
+{% block title %}Bài tập & Cách giải - A3 Chuyên Tin{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <div class="flex items-center justify-between flex-wrap gap-4 mb-4">
+        <h1 class="text-2xl font-bold text-surface-900 flex items-center gap-2">
+            <i class="fas fa-code text-brand-500"></i> Bài tập & Cách giải
+        </h1>
+        {% if user.is_authenticated %}
+            <a href="{% url 'exercise_create' %}" class="btn"><i class="fas fa-plus"></i> Đăng bài tập</a>
+        {% endif %}
+    </div>
+    {% include 'components/search_bar.html' with search_action='/exercises/' search_query=search_query search_placeholder="Tìm kiếm bài tập..." %}
+</div>
+
+<div class="space-y-4">
+    {% for exercise in exercises %}
+        <div class="card hover:shadow-md transition-shadow">
+            <h3 class="text-lg font-bold mb-2">
+                <a href="{% url 'exercise_detail' exercise.pk %}" class="text-surface-900 hover:text-brand-600 transition-colors">{{ exercise.title }}</a>
+            </h3>
+            <div class="flex items-center gap-3 text-sm text-surface-400 flex-wrap mb-2">
+                <span class="flex items-center gap-1">
+                    <img src="{{ exercise.author.profile.get_avatar_url }}" alt="{{ exercise.author.username }}" class="avatar-inline">
+                    <span class="font-medium text-surface-600">{{ exercise.author.username }}</span>
+                </span>
+                <span><i class="far fa-calendar mr-1"></i> {{ exercise.created_at|date:"d/m/Y" }}</span>
+                <span class="flex items-center gap-1"><i class="fas fa-chart-line mr-1"></i> {{ exercise.total_votes }} điểm</span>
+            </div>
+            <p class="text-surface-500 text-sm line-clamp-2 mb-2">{{ exercise.description|truncatewords:50 }}</p>
+            {% if exercise.url %}
+                <a href="{{ exercise.url }}" target="_blank" class="text-sm text-brand-600 hover:text-brand-700"><i class="fas fa-link mr-1"></i> Xem bài tập gốc</a>
+            {% endif %}
+            <div class="flex flex-wrap gap-1.5 mt-3">
+                {% for tag in exercise.hashtags.all|slice:":5" %}
+                    <a href="{% url 'exercise_hashtag_view' tag.slug %}" class="hashtag">#{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="card text-center text-surface-400 py-12">
+            <p>Không tìm thấy bài tập nào.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

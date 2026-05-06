@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} - A3 Chuyên Tin{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="card">
+        <h1 class="text-2xl font-bold text-surface-900 mb-6 flex items-center gap-2">
+            <i class="fas fa-code text-brand-500"></i> {{ title }}
+        </h1>
+        <form method="post" class="space-y-5">
+            {% csrf_token %}
+            
+            <div>
+                <label class="block text-sm font-semibold text-surface-700 mb-1.5">Tiêu đề</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ form.title.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold text-surface-700 mb-1.5">Ngôn ngữ</label>
+                {{ form.language }}
+                {% if form.language.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ form.language.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold text-surface-700 mb-1.5">Mô tả ngắn</label>
+                {{ form.description }}
+                <p class="text-surface-400 text-xs mt-1">Mô tả ngắn gọn về snippet này</p>
+                {% if form.description.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ form.description.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold text-surface-700 mb-1.5">Code</label>
+                {{ form.content }}
+                <p class="text-surface-400 text-xs mt-1">Dán code của bạn vào đây</p>
+                {% if form.content.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ form.content.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="flex gap-3">
+                <button type="submit" class="btn">
+                    <i class="fas fa-save mr-1"></i> Lưu snippet
+                </button>
+                <a href="{% url 'snippet_list' %}" class="btn-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

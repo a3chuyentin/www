@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "a3chuyentin"
+version = "1.0.0"
+description = "Django blog platform for A3 Chuyen Tin class"
+readme = "README.md"
+requires-python = ">=3.14"
+
+[tool.black]
+line-length = 100
+target-version = ['py314']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.flake8]
+max-line-length = 100
+exclude = ["migrations", "venv", "__pycache__"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = "test_*.py"

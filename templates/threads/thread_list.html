@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load avatar_tags %}
+{% block title %}Hỏi đáp - A3 Chuyên Tin{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <div class="flex items-center justify-between flex-wrap gap-4 mb-4">
+        <h1 class="text-2xl font-bold text-surface-900 flex items-center gap-2">
+            <i class="fas fa-comments text-brand-500"></i> Hỏi đáp
+        </h1>
+        {% if user.is_authenticated %}
+            <a href="{% url 'thread_create' %}" class="btn"><i class="fas fa-plus"></i> Đặt câu hỏi</a>
+        {% endif %}
+    </div>
+    {% include 'components/search_bar.html' with search_action='/threads/' search_query=search_query search_placeholder="Tìm kiếm câu hỏi..." %}
+</div>
+
+<div class="space-y-3">
+    {% for thread in threads %}
+        <div class="card hover:shadow-md transition-shadow {% if thread.is_resolved %}border-l-4 border-green-400{% endif %}">
+            <h3 class="text-lg font-bold mb-2">
+                <a href="{% url 'thread_detail' thread.pk %}" class="text-surface-900 hover:text-brand-600 transition-colors">{{ thread.title }}</a>
+            </h3>
+            <div class="flex items-center gap-3 text-sm text-surface-400 flex-wrap">
+                <span class="flex items-center gap-1">
+                    <img src="{{ thread.author.profile.get_avatar_url }}" alt="{{ thread.author.username }}" class="avatar-inline">
+                    <span class="font-medium text-surface-600">{{ thread.author.username }}</span>
+                </span>
+                <span><i class="far fa-calendar mr-1"></i> {{ thread.created_at|date:"d/m/Y" }}</span>
+                <span><i class="far fa-comment mr-1"></i> {{ thread.comments.count }} bình luận</span>
+                {% if thread.is_resolved %}
+                    <span class="px-2 py-0.5 bg-green-50 text-green-600 rounded-lg text-xs font-bold"><i class="fas fa-check-circle mr-1"></i> Đã giải quyết</span>
+                {% endif %}
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-3">
+                {% for tag in thread.hashtags.all|slice:":5" %}
+                    <a href="{% url 'thread_hashtag_view' tag.slug %}" class="hashtag">#{{ tag.name }}</a><span class="hashtag">#{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="card text-center text-surface-400 py-12">
+            <p>Không tìm thấy câu hỏi nào.</p>
+        </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+    <div class="flex justify-center gap-2 mt-6">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="px-4 py-2 bg-surface-100 rounded-lg text-sm hover:bg-surface-200 transition-colors">« Trước</a>
+        {% endif %}
+        <span class="px-4 py-2 text-sm text-surface-500">Trang {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="px-4 py-2 bg-surface-100 rounded-lg text-sm hover:bg-surface-200 transition-colors">Sau »</a>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

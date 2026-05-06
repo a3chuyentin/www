@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load markdown_tags %}
+{% load avatar_tags %}
+{% block title %}{{ exercise.title }} - A3 Chuyên Tin{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="card mb-5">
+        <div class="flex items-start justify-between mb-3">
+            <h1 class="text-2xl font-bold text-surface-900">{{ exercise.title }}</h1>
+            {% if user == exercise.author %}
+                <div class="flex gap-2">
+                    <a href="{% url 'exercise_update' exercise.pk %}" class="btn text-sm">
+                        <i class="fas fa-edit"></i> Sửa
+                    </a>
+                    <a href="{% url 'exercise_delete' exercise.pk %}" class="btn-danger text-sm">
+                        <i class="fas fa-trash"></i> Xóa
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="flex items-center gap-3 text-sm text-surface-400 flex-wrap mb-4">
+            <span class="flex items-center gap-1">
+                <img src="{{ exercise.author.profile.get_avatar_url }}" alt="{{ exercise.author.username }}" class="avatar-inline">
+                <span class="font-medium text-surface-600">{{ exercise.author.username }}</span>
+            </span>
+            <span><i class="far fa-calendar mr-1"></i> {{ exercise.created_at|date:"d/m/Y H:i" }}</span>
+        </div>
+        
+        <div class="flex items-center gap-3 mb-4">
+            <button class="vote-btn vote-up {% if user_vote == 1 %}active{% endif %}" data-value="1" data-url="{% url 'exercise_vote' exercise.pk %}">
+                <i class="fas fa-thumbs-up"></i>
+            </button>
+            <span class="font-bold text-surface-700 min-w-[30px] text-center" id="vote-count">{{ exercise.total_votes }}</span>
+            <button class="vote-btn vote-down {% if user_vote == -1 %}active{% endif %}" data-value="-1" data-url="{% url 'exercise_vote' exercise.pk %}">
+                <i class="fas fa-thumbs-down"></i>
+            </button>
+        </div>
+        
+        <h3 class="font-bold text-surface-900 mb-2">Mô tả bài tập</h3>
+        <div class="markdown-content mb-4">
+            {{ exercise.description|render_markdown }}
+        </div>
+        
+        {% if exercise.url %}
+            <a href="{{ exercise.url }}" target="_blank" rel="noopener noreferrer" class="text-brand-600 hover:text-brand-700 text-sm"><i class="fas fa-link mr-1"></i> Xem bài tập gốc</a>
+        {% endif %}
+        
+        <div class="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-surface-100">
+            <i class="fas fa-tags text-surface-400 mt-1 mr-1"></i>
+            {% for tag in exercise.hashtags.all %}
+                <a href="{% url 'exercise_hashtag_view' tag.slug %}" class="hashtag">#{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+        
+        {% if exercise.solution %}
+            <details class="mt-4 bg-surface-50 border border-surface-200 rounded-xl p-4">
+                <summary class="cursor-pointer font-semibold text-brand-600 hover:text-brand-700"><i class="fas fa-lightbulb mr-1"></i> Xem lời giải</summary>
+                <div class="markdown-content mt-3 pt-3 border-t border-surface-200">
+                    {{ exercise.solution|render_markdown }}
+                </div>
+            </details>
+        {% endif %}
+    </div>
+    
+    <div class="card">
+        <h3 class="text-xl font-bold text-surface-900 mb-4">Bình luận</h3>
+        
+        {% if user.is_authenticated %}
+            <div class="bg-surface-50 rounded-xl p-4 mb-6">
+                <form method="post" action="{% url 'exercise_comment' exercise.pk %}" class="space-y-3">
+                    {% csrf_token %}
+                    {{ comment_form.content }}
+                    <button type="submit" class="btn text-sm">Gửi bình luận</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="bg-surface-50 rounded-xl p-4 mb-6 text-center">
+                <p class="text-surface-500"><a href="{% url 'login' %}" class="text-brand-600 font-semibold">Đăng nhập</a> để bình luận.</p>
+            </div>
+        {% endif %}
+        
+        {% include 'exercises/comment_tree.html' with comments=comment_tree exercise=exercise %}
+    </div>
+</div>
+{% endblock %}

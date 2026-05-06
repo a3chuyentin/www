@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile_user.username }} - A3 Chuyên Tin{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="card text-center mb-6">
+        <img src="{{ profile_user.profile.get_avatar_url }}" alt="Avatar" class="avatar-large mx-auto mb-4">
+        <h1 class="text-2xl font-bold text-surface-900">{{ profile_user.profile.full_name|default:profile_user.username }}</h1>
+        <p class="text-surface-400 mt-1"><i class="fas fa-user mr-1"></i> @{{ profile_user.username }}</p>
+        {% if profile_user.profile.quote %}
+            <p class="text-surface-500 italic mt-2"><i class="fas fa-quote-left mr-1 text-brand-300"></i> {{ profile_user.profile.quote }}</p>
+        {% endif %}
+        {% if profile_user.profile.bio %}
+            <p class="text-surface-600 mt-3 max-w-lg mx-auto">{{ profile_user.profile.bio }}</p>
+        {% endif %}
+    </div>
+    
+    <div class="card">
+        <h3 class="text-lg font-bold text-surface-900 mb-4">Bài viết của {{ profile_user.username }}</h3>
+        {% for post in user_posts %}
+            <div class="py-3 border-b border-surface-100 last:border-0">
+                <h4 class="font-semibold">
+                    <a href="{% url 'post_detail' post.pk %}" class="text-surface-800 hover:text-brand-600 transition-colors">{{ post.title }}</a>
+                </h4>
+                <span class="text-sm text-surface-400">{{ post.created_at|date:"d/m/Y" }}</span>
+            </div>
+        {% empty %}
+            <p class="text-surface-400 text-sm">Chưa có bài viết nào.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
