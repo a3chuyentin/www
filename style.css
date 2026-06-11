@@ -1,0 +1,624 @@
+/* ==========================================
+   FONT FACE — Dancing Script (local)
+   ========================================== */
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/fonts/DancingScript-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 500;
+  src: url('assets/fonts/DancingScript-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 600;
+  src: url('assets/fonts/DancingScript-SemiBold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 700;
+  src: url('assets/fonts/DancingScript-Bold.ttf') format('truetype');
+}
+
+/* ==========================================
+   RESET & BASE
+   ========================================== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================
+   COLORS
+   ========================================== */
+:root {
+  --white: #ffffff;
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --slate-950: #020617;
+  --teal-50: #f0fdfa;
+  --teal-200: #99f6e4;
+  --teal-500: #14b8a6;
+  --teal-600: #0d9488;
+  --blue-100: #dbeafe;
+  --blue-700: #1d4ed8;
+  --emerald-100: #d1fae5;
+  --emerald-700: #047857;
+}
+
+/* ==========================================
+   FULLPAGE SCROLL
+   ========================================== */
+#fullpage {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#fullpage::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==========================================
+   PAGE SECTIONS
+   ========================================== */
+.page {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+/* Backgrounds — mỗi page một gradient riêng biệt */
+.bg-hero { background: linear-gradient(180deg, #ffffff 0%, #ffffff 55%, #f0fdfa 100%); }
+.bg-about { background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%); }
+.bg-competitions { background: linear-gradient(180deg, #f1f5f9 0%, #ffffff 100%); }
+.bg-stats { background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%); }
+.bg-members { background: linear-gradient(180deg, #fefce8 0%, #ffffff 100%); }
+.bg-teachers { background: linear-gradient(180deg, #faf5ff 0%, #ffffff 100%); }
+.bg-achievements { background: linear-gradient(180deg, #fdf2f8 0%, #ffffff 100%); }
+.bg-extracurricular { background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 100%); }
+.bg-footer { background: linear-gradient(180deg, #0f172a 0%, #020617 100%); }
+
+/* ==========================================
+   SECTION CONTENT (entrance animation)
+   ========================================== */
+.section-content {
+  width: 100%;
+  max-width: 64rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.page.active .section-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================
+   FONT: DANCING SCRIPT
+   ========================================== */
+.font-dancing,
+.hero-title {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+}
+
+/* ==========================================
+   HERO
+   ========================================== */
+#hero {
+  min-height: 100vh;
+}
+
+#hero .section-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: none;
+}
+
+.hero-logo {
+  width: 5rem;
+  height: 5rem;
+  object-fit: contain;
+  margin-bottom: 1.5rem;
+}
+
+.hero-slogan {
+  font-size: 0.875rem;
+  color: var(--slate-400);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.hero-title {
+  font-size: 3rem;
+  color: var(--slate-800);
+  text-align: center;
+  line-height: 1.1;
+}
+
+@media (min-width: 768px) {
+  .hero-logo { width: 7rem; height: 7rem; }
+  .hero-slogan { font-size: 1rem; }
+  .hero-title { font-size: 4.5rem; }
+}
+
+@media (min-width: 1024px) {
+  .hero-title { font-size: 6rem; }
+}
+
+/* ==========================================
+   SECTION HEADING
+   ========================================== */
+.section-heading {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: var(--slate-800);
+  margin-bottom: 3rem;
+}
+
+.section-heading::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--teal-500), #2dd4bf);
+}
+
+@media (min-width: 768px) {
+  .section-heading { font-size: 2.25rem; }
+}
+
+/* ==========================================
+   TEXT CENTER
+   ========================================== */
+.text-center { text-align: center; }
+
+/* ==========================================
+   COL (vertical flex helper)
+   ========================================== */
+.col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ==========================================
+   GRID LAYOUTS
+   ========================================== */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.full-width {
+  grid-column: 1 / -1;
+  max-width: 28rem;
+  justify-self: center;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .full-width { grid-column: span 2; }
+}
+
+/* ==========================================
+   INFO CARD (About)
+   ========================================== */
+.info-card {
+  background: var(--white);
+  border-radius: 1.25rem;
+  padding: 2rem 2.5rem;
+  border: 1px solid var(--slate-100);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(20,184,166,0.06);
+  transition: box-shadow 0.3s ease;
+  max-width: 36rem;
+  width: 100%;
+}
+
+.info-card:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 8px 24px rgba(20,184,166,0.1);
+}
+
+.info-card p {
+  font-size: 1.125rem;
+  line-height: 1.625;
+  color: var(--slate-600);
+}
+
+@media (min-width: 768px) {
+  .info-card p { font-size: 1.25rem; }
+}
+
+.label {
+  font-weight: 600;
+  color: var(--slate-800);
+}
+
+.divider-teal {
+  border: none;
+  height: 1px;
+  margin: 0.75rem 0;
+  background: linear-gradient(to right, transparent, var(--teal-200), transparent);
+}
+
+/* ==========================================
+   COMPETITION ITEM
+   ========================================== */
+.competition-item {
+  display: flex;
+  align-items: center;
+  padding: 0.875rem 1.25rem;
+  background: var(--white);
+  border-radius: 0.75rem;
+  border: 1px solid var(--slate-100);
+  border-left: 3px solid var(--teal-200);
+  color: var(--slate-600);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  list-style: none;
+}
+
+.competition-item::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal-500);
+  margin-right: 12px;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.competition-item:hover {
+  transform: translateY(-2px);
+  border-left-color: var(--teal-500);
+  box-shadow: 0 4px 16px rgba(20,184,166,0.1);
+  background: #fafffe;
+}
+
+/* ==========================================
+   STAT CARD
+   ========================================== */
+.stat-card {
+  background: var(--white);
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border: 1px solid var(--slate-100);
+  border-top: 3px solid var(--teal-200);
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(20,184,166,0.05);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  border-top-color: var(--teal-500);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 8px 24px rgba(20,184,166,0.15);
+}
+
+.stat-number {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--teal-600);
+}
+
+@media (min-width: 768px) {
+  .stat-number { font-size: 3rem; }
+}
+
+.stat-label {
+  color: var(--slate-500);
+  margin-top: 0.75rem;
+  font-weight: 500;
+}
+
+/* ==========================================
+   MEMBER GRID
+   ========================================== */
+.member-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.member-card {
+  flex: 1 1 100%;
+  max-width: 24rem;
+  background: var(--white);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--slate-100);
+  border-top: 3px solid var(--teal-200);
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.member-card:hover {
+  transform: translateY(-3px);
+  border-top-color: var(--teal-500);
+  box-shadow: 0 8px 24px rgba(20,184,166,0.12);
+}
+
+@media (min-width: 640px) {
+  .member-card { flex-basis: calc(50% - 0.5rem); }
+}
+
+@media (min-width: 1024px) {
+  .member-card { flex-basis: calc(33.333% - 0.667rem); }
+}
+
+.member-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--slate-800);
+}
+
+.member-nick {
+  font-size: 0.875rem;
+  color: var(--teal-600);
+  font-style: italic;
+  margin-top: 0.125rem;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  line-height: 1.4;
+}
+
+.badge-blue {
+  background: var(--blue-100);
+  color: var(--blue-700);
+}
+
+.badge-green {
+  background: var(--emerald-100);
+  color: var(--emerald-700);
+}
+
+/* ==========================================
+   TEACHER CARD
+   ========================================== */
+.teacher-card {
+  background: var(--white);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid var(--slate-100);
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.teacher-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--teal-200);
+  box-shadow: 0 4px 16px rgba(20,184,166,0.1);
+}
+
+.teacher-card-dashed {
+  border: 2px dashed var(--slate-200);
+}
+
+.teacher-card-dashed:hover {
+  border-color: var(--teal-200);
+}
+
+.teacher-year {
+  font-size: 0.875rem;
+  color: var(--slate-400);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.teacher-class {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--slate-800);
+}
+
+.teacher-name {
+  color: var(--slate-600);
+  margin-top: 0.25rem;
+}
+
+.coming-soon {
+  color: var(--slate-400);
+  font-style: italic;
+}
+
+/* ==========================================
+   ACHIEVEMENT CARD
+   ========================================== */
+.achievement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.achievement-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--white);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--slate-100);
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.achievement-card:hover {
+  transform: translateX(4px);
+  border-color: var(--teal-200);
+  box-shadow: 0 4px 16px rgba(20,184,166,0.1);
+}
+
+.achievement-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  line-height: 1;
+}
+
+.achievement-title {
+  font-weight: 600;
+  color: var(--slate-800);
+}
+
+.achievement-desc {
+  color: var(--slate-600);
+  margin-top: 0.25rem;
+}
+
+/* ==========================================
+   ACTIVITY CARD (Extracurricular)
+   ========================================== */
+.activity-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--white);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid var(--slate-100);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .activity-card { padding: 2rem; }
+}
+
+.activity-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  line-height: 1;
+}
+
+.activity-title {
+  font-weight: 600;
+  color: var(--slate-800);
+  font-size: 1.125rem;
+}
+
+.activity-desc {
+  color: var(--slate-600);
+  margin-top: 0.5rem;
+  line-height: 1.625;
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+#footer .section-content {
+  gap: 0.5rem;
+}
+
+.footer-logo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.25rem;
+}
+
+.footer-school {
+  font-size: 0.9rem;
+  color: var(--slate-400);
+  letter-spacing: 0.05em;
+}
+
+.footer-slogan {
+  font-size: 0.75rem;
+  color: var(--slate-500);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.footer-divider {
+  width: 3rem;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(to right, var(--teal-500), #2dd4bf);
+  margin: 0.75rem 0;
+}
+
+.footer-copyright {
+  color: var(--slate-500);
+  font-size: 0.8rem;
+  letter-spacing: 0.025em;
+}
