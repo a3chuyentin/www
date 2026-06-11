@@ -73,6 +73,9 @@ html, body {
    FULLPAGE SCROLL
    ========================================== */
 #fullpage {
+  position: relative;
+  z-index: 1;
+  background: transparent;
   height: 100vh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
@@ -83,6 +86,17 @@ html, body {
 
 #fullpage::-webkit-scrollbar {
   display: none;
+}
+
+/* ==========================================
+   GRADIENT OVERLAY
+   ========================================== */
+#gradient-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: #ffffff;
 }
 
 /* ==========================================
@@ -98,17 +112,6 @@ html, body {
   padding: 3rem 1rem;
 }
 
-/* Backgrounds — mỗi page một gradient riêng biệt */
-.bg-hero { background: linear-gradient(180deg, #ffffff 0%, #ffffff 55%, #f0fdfa 100%); }
-.bg-about { background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%); }
-.bg-competitions { background: linear-gradient(180deg, #f1f5f9 0%, #ffffff 100%); }
-.bg-stats { background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%); }
-.bg-members { background: linear-gradient(180deg, #fefce8 0%, #ffffff 100%); }
-.bg-teachers { background: linear-gradient(180deg, #faf5ff 0%, #ffffff 100%); }
-.bg-achievements { background: linear-gradient(180deg, #fdf2f8 0%, #ffffff 100%); }
-.bg-extracurricular { background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 100%); }
-.bg-footer { background: linear-gradient(180deg, #0f172a 0%, #020617 100%); }
-
 /* ==========================================
    SECTION CONTENT (entrance animation)
    ========================================== */
@@ -122,7 +125,19 @@ html, body {
 
 .page.active .section-content {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+}
+
+@media (min-width: 640px) {
+  #hero .section-content { transform: translateY(-30px); }
+  #about .section-content { transform: translateX(-40px); }
+  #competitions .section-content { transform: translateX(40px); }
+  #stats .section-content { transform: scale(0.92); }
+  #members .section-content { transform: translateY(40px); }
+  #teachers .section-content { transform: translateX(-30px); }
+  #achievements .section-content { transform: translateX(30px); }
+  #extracurricular .section-content { transform: scale(0.92) translateY(20px); }
+  #footer .section-content { transform: translateY(-30px); }
 }
 
 /* ==========================================
@@ -621,4 +636,122 @@ html, body {
   color: var(--slate-500);
   font-size: 0.8rem;
   letter-spacing: 0.025em;
+}
+
+/* ==========================================
+   MOBILE OPTIMISATION
+   ========================================== */
+@media (max-width: 639px) {
+  html, body {
+    overflow: auto;
+  }
+
+  #fullpage {
+    height: auto;
+    overflow: visible;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+  }
+
+  .section-content {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .page {
+    min-height: auto;
+    scroll-snap-align: none;
+    padding: 4.5rem 1.25rem;
+  }
+
+  .section-heading {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-heading::after {
+    width: 36px;
+    height: 2px;
+    bottom: -8px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-logo {
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-slogan {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card {
+    padding: 1.25rem 1.25rem;
+  }
+
+  .info-card p {
+    font-size: 1rem;
+  }
+
+  .grid-3 {
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .member-card {
+    padding: 1rem;
+  }
+
+  .member-name {
+    font-size: 1rem;
+  }
+
+  .teacher-card {
+    padding: 1.25rem;
+  }
+
+  .achievement-card {
+    padding: 1rem 1.25rem;
+  }
+
+  .achievement-icon {
+    font-size: 1.25rem;
+  }
+
+  .activity-card {
+    padding: 1.25rem;
+  }
+
+  .activity-icon {
+    font-size: 1.5rem;
+  }
+
+  .activity-title {
+    font-size: 1rem;
+  }
+
+  .footer-logo {
+    font-size: 2rem;
+  }
+
+  .footer-school {
+    font-size: 0.8rem;
+  }
+
+  .footer-divider {
+    width: 2.5rem;
+  }
 }
